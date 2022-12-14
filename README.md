@@ -11,10 +11,10 @@ The purpose of the code is to follow a requirement for calculating and presentin
 ```mermaid
 graph TD;
 
-HOM [User in home page] --> EUS [Edit user scoring in place (optionally)]
-EUS --> BTN [User clicks on "Recalculate" button];
-BTN --> CLC [Evaluate all companies];
-CLC --> DSP [Display company evaluations];
+HOM[User in home page] -->EUS[Edit user scoring in place optionally]
+EUS --> BTN[User clicks on 'Recalculate' button];
+BTN --> CLC[Evaluate all companies];
+CLC --> DSP[Display company evaluations];
 ```
 
 ### Configuration
@@ -22,10 +22,10 @@ CLC --> DSP [Display company evaluations];
 ```mermaid
 graph TD;
 
-HOM [User in home page] --> CFG [User navigates to configuartion page];
-CFG --> ADM [Is admin user?]
-ADM -- Yes --> EDW [Edit default weights]
-ADM -- No --> EUW [Edit user-configurable weights]
+HOM[User in home page] --> CFG[User navigates to configuartion page];
+CFG --> ADM[Is admin user?]
+ADM -- Yes --> EDW[Edit default weights]
+ADM -- No --> EUW[Edit user-configurable weights]
 ```
 
 ## Components & Flow
@@ -42,20 +42,21 @@ sequenceDiagram
     participant Evaluation
     participant Scoring
     rect rgb(191, 223, 255)
-    note right of UI: Calculation.
-    UI->>+Evaluation: POST /evaluation
-    par each company ID
-        Evaluation->>+Scoring: POST /evaluations?company_id={id}
+        note right of UI: Calculation.
+        UI->>+Evaluation: POST /evaluation
+        par each company ID
+            Evaluation->>+Scoring: POST /evaluations?company_id={id}
+        end
+        UI-)+Evaluation: GET /evaluations/latest/results
+        Evaluation->>-UI: results
     end
-    UI-)+Evaluation: GET /evaluations/latest/results
-    Evaluation->>-UI: results
     rect rgb(210, 180, 255)
-    note right of UI: Default weights configuartion.
-    UI->>+Scoring: PUT /user-weights
+        note right of UI: Default weights configuartion.
+        UI->>+Scoring: PUT /user-weights
     end
     rect rgb(200, 240, 230)
-    note right of UI: Default weights configuartion.
-    UI->>+Scoring: PUT /default-weights
+        note right of UI: Default weights configuartion.
+        UI->>+Scoring: PUT /default-weights
     end
 ```
 
