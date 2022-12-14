@@ -9,7 +9,7 @@ The purpose of the code is to follow a requirement for calculating and presentin
 ### Calculation
 
 ```mermain
-flowchart TD
+graph TD
 
 HOM [User in home page] --> EUS [Edit user scoring in place (optionally)]
 EUS --> BTN [User clicks on "Recalculate" button];
@@ -20,7 +20,7 @@ CLC --> DSP [Display company evaluations];
 ### Configuration
 
 ```mermain
-flowchart TD
+graph TD
 
 HOM [User in home page] --> CFG [User navigates to configuartion page];
 CFG --> ADM [Is admin user?]
