@@ -8,8 +8,8 @@ The purpose of the code is to follow a requirement for calculating and presentin
 
 ### Calculation
 
-```mermain
-graph TD
+```mermaid
+graph TD;
 
 HOM [User in home page] --> EUS [Edit user scoring in place (optionally)]
 EUS --> BTN [User clicks on "Recalculate" button];
@@ -19,8 +19,8 @@ CLC --> DSP [Display company evaluations];
 
 ### Configuration
 
-```mermain
-graph TD
+```mermaid
+graph TD;
 
 HOM [User in home page] --> CFG [User navigates to configuartion page];
 CFG --> ADM [Is admin user?]
@@ -36,7 +36,7 @@ The implmentation consists of the following components:
 * Evaluation service - to orchestrate the calculation process and provide the results
 * Scoring service - for single-company score calculation, and weights
 
-```mermain
+```mermaid
 sequenceDiagram
     participant UI
     participant Evaluation
