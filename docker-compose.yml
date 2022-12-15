@@ -1,0 +1,24 @@
+version: '2' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  spa: # name of the first service
+    hostname: localhost
+    build: spa # specify the directory of the Dockerfile
+    ports:
+      - "8092:80" # specify port forewarding
+  
+  scoring: #name of the second service
+    build: scoring # specify the directory of the Dockerfile
+    ports:
+      - "3000:3001" #specify ports forewarding
+
+  evaluation: #name of the second service
+    build: evaluation # specify the directory of the Dockerfile
+    ports:
+      - "3000:3002" #specify ports forewarding
+
+  database: # name of the third service
+    image: mongo # specify image to build container from
+    ports:
+      - "27017:27017" # specify port forewarding  
