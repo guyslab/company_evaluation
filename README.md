@@ -65,12 +65,8 @@ sequenceDiagram
         Evaluation->>-UI: results
     end
     rect rgb(210, 180, 255)
-        note right of UI: Default weights configuartion.
-        UI->>+Scoring: PUT /user-weights
-    end
-    rect rgb(200, 240, 230)
-        note right of UI: Default weights configuartion.
-        UI->>+Scoring: PUT /default-weights
+        note right of UI: Weights configuartion.
+        UI->>+Scoring: PUT /users/{user_id}/weights
     end
 ```
 

@@ -1,7 +1,7 @@
 const service = require('../services/weights_service');
 
 const configureWeights = async function (req, res) {
-  const desiredUserId = req.body.user_id;
+  const desiredUserId = req.params.user_id;
   const actualUserId = req.headers['x-user-id'];
   if (actualUserId !== desiredUserId){
     res.status(403).send(`Cannot configure weights for user: ${desiredUserId}`);
@@ -14,8 +14,10 @@ const configureWeights = async function (req, res) {
     result = await service.setWeightsForUser(weights, actualUserId);
   } catch (error) {
     console.error(error);
-    res.status(400).send(`Error setting weights`);
-  }   
+    res.status(400).send(`Error setting weights. ${error.message}`);
+  }
+  
+  res.status(200).send();
 }
 
 module.exports = {

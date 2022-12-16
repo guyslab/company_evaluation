@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 // Get our API routes
 const api = require('./routes/api');
+const defaults = require('./routes/default');
 
 const app = express();
 
@@ -13,10 +14,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 // Set our api routes
 app.use('/', api);
 
+// 500
+app.use(defaults.errorHandler);
+  
+// 404
+app.use(defaults.notFound);
 
 /**
  * Get port from environment and store in Express.

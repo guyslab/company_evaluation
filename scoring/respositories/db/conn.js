@@ -1,25 +1,28 @@
 const { MongoClient } = require("mongodb");
 const connectionString = process.env.MONGO_URI;
-const client = new MongoClient(connectionString, {
-  useNewUrlParser: true
-});
 
-let dbConnection;
+let client;
 
-const connectToDb = async function (dbName) {
-  const connection = await client.connect();
-  if (!connection){
-    throw new Error("Error connecting to MongoDB");
+const connectToMongo = async function connect() {
+  try {
+    client = new MongoClient(connectionString, {
+      useNewUrlParser: true
+    });
+    const connection = await client.connect();
+    if (!connection){
+      throw new Error("Error connecting to MongoDB");
+    }
+    console.log("Successfully connected to MongoDB.");
+
+  } catch (error) {
+    await client.close();
+    console.error(`Error connecting to MongoDB database ${dbName}`, error);
+    process.exit();
   }
-  dbConnection = connection.db(dbName);
-  console.log("Successfully connected to MongoDB.");
-}
 
-const getDb = function () {
-  return dbConnection;
+  return client;
 }
 
 module.exports = {
-  connectToDb,
-  getDb
+  connectToMongo
 };
