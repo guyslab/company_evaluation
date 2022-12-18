@@ -12,8 +12,9 @@ const setWeightsForUser = async function (weights, userId) {
     weights.user_scoring = defaults.user_scoring;
   }
 
-  console.debug ('Weights to update', JSON.stringify(weights, null, 4));
-  if (weights.company_size + weights.company_funding + weights.company_age + weights.user_scoring != 1){
+  const weightsSum = Math.round((weights.company_size + weights.company_funding + weights.company_age + weights.user_scoring) * 1000 / 1000);
+  console.debug ('Weights to update', JSON.stringify(weights, null, 4), ' weights sum = ' + weightsSum);
+  if (weightsSum != 1){
     throw new Error('Provided weights do not sum up to 1');
   }
   

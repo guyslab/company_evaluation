@@ -16,6 +16,15 @@ At the top left switch between home and configuration pages
 At home page - request and display company evaluations
 At configuation page modify weights for calculations
 
+#### API Examples
+
+* Scoring healthcheck: `curl http://localhost:3001/healthcheck -H "Content-Type: application/json"`
+* Scoring set default weights: `curl -X PUT http://localhost:3001/users/SYSTEM_ADMIN/weights -H "Content-Type: application/json" -H "x-user-id: SYSTEM_ADMIN" -d '{"weights": {"company_size": 0.3, "company_funding": 0.4, "company_age": 0.15, "user_scoring": 0.15}}'`
+* Scoring set user weight: `curl -X PUT http://localhost:3001/users/usr1/weights -H "Content-Type: application/json" -H "x-user-id: usr1" -d '{"weights": {"company_size": 0.3, "company_funding": 0.4, "company_age": 0.15, "user_scoring": 0.15}}'`
+* Scoring user *usr1* scores company A: `curl -X PUT http://localhost:3001/users/usr1/scores/A -H "Content-Type: application/json" -H "x-user-id: usr1" -d '{"score": 20000}'`
+* Scoring get scores for user *usr1*: `curl -X GET http://localhost:3001/users/usr1/scores -H "Content-Type: application/json" -H "x-user-id: usr1"`
+* Evaluate company A: `curl -X POST http://localhost:3001/companies/A/evaluations -H "Content-Type: application/json" -H "x-user-id: usr1"`
+
 
 ## Activities
 
@@ -54,20 +63,28 @@ sequenceDiagram
     participant UI
     participant Evaluation
     participant Scoring
+    rect rgb(255, 220, 255)
+        note right of UI: User scoring
+        UI->>+Scoring: GET /users/{user_id}/scores
+        par each company ID in user scores
+            UI->>+Scoring: PUT /users/{user_id}/scores/{company_id}
+        end
+    end
     rect rgb(191, 223, 255)
         note right of UI: Calculation.
+        UI->>+Evaluation: GET /evaluations/latest/results   
+        Evaluation->>-UI: results     
         UI->>+Evaluation: POST /evaluation
-        par each company ID
-            Evaluation->>+Scoring: PUT /companies/{company_id}/scores/user_score
+        par each company ID in evaluation
             Evaluation->>+Scoring: POST /companies/{company_id}/evaluations
         end
-        UI-)+Evaluation: GET /evaluations/latest/results
+        UI->>+Evaluation: GET /evaluations/latest/results
         Evaluation->>-UI: results
     end
     rect rgb(210, 180, 255)
         note right of UI: Weights configuartion.
         UI->>+Scoring: PUT /users/{user_id}/weights
-    end
+    end    
 ```
 
 ## Comments & assumptions:

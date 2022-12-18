@@ -10,8 +10,14 @@ const getByUserIdAndCompanyId = async function (userId, companyId) {
   return await repo.getByUserIdAndCompanyId(userId, companyId);
 }
 
+const getByUserId = async function (userId) {
+  await repo.init();
+  return await repo.getByUserId(userId);
+}
+
 
 module.exports = {
   getByUserIdAndCompanyId,
-  setForUserIdAndCompanyId
+  setForUserIdAndCompanyId,
+  getByUserId
 };

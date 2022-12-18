@@ -1,4 +1,4 @@
-const companyEvaluations = require('../services/company_evaluation_service');
+const companyEvaluations = require('../services/ealuation_service');
 
 const evaluateCompany = async function (req, res) {
   const companyId = req.params.company_id;
@@ -14,6 +14,7 @@ const evaluateCompany = async function (req, res) {
   res.send({result});
 }
 
+
 module.exports = {
-  evaluateCompany,
+  evaluateCompany
 };

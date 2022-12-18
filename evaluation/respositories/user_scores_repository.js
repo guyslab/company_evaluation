@@ -34,22 +34,6 @@ const getByUserIdAndCompanyId = async function (user_id, company_id) {
   return result;
 }
 
-const getByUserId = async function (user_id) {
-  let mongoClient; 
-  let result;
-  try {
-    mongoClient = await connectToMongo();
-    const collection = mongoClient.db(dbName).collection(COLLECTION_NAME);
-    result = await collection.find({user_id}).toArray();
-  } catch (error) {
-    throw new Error(`Error in ${getByUserId.name} from MongoDB: ${error.message}`);
-  } finally {
-    await mongoClient.close();
-  }
-
-  return result;
-}
-
 const setForUserIdAndCompanyId = async function (user_id, company_id, score) {
   let mongoClient; 
   const filter = { user_id, company_id };
@@ -69,6 +53,5 @@ const setForUserIdAndCompanyId = async function (user_id, company_id, score) {
 module.exports = {
   init,
   getByUserIdAndCompanyId,
-  setForUserIdAndCompanyId,
-  getByUserId
+  setForUserIdAndCompanyId
 };
