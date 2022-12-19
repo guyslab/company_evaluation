@@ -8,10 +8,10 @@ const evaluateCompany = async function (req, res) {
     result = await companyEvaluations.evaluateCompany(userId, companyId);
   } catch (error) {
     console.error(error);
-    res.status(400).send(`Error evaluating company with id ${companyId.id}!`);
+    res.status(400).send(`Error evaluating company with id ${companyId}!`);
   }  
   
-  res.send({result});
+  res.send({company_id: companyId, score: result});
 }
 
 module.exports = {

@@ -18,15 +18,29 @@ services:
     depends_on:
       - database
 
-  # evaluation:
-  #   build: evaluation
-  #   ports:
-  #     - "3002:3000"
-  #   environment:
-  #     - MONGO_URI=mongodb://database:27017
-  #     - SCORING_URI=http://scoring:3001
+  evaluation:
+    build: evaluation
+    ports:
+      - "3002:3000"
+    environment:
+      - MONGO_URI=mongodb://database:27017
+      - SCORING_URI=http://scoring:3000
+      - DBNAME=db
+    depends_on:
+      - database
+      - scoring
 
   database:
     image: mongo
     ports:
       - "27017:27017"
+  seed:
+    image: curlimages/curl
+    depends_on:
+      - scoring
+      - evaluation
+    depends_on:
+      - scoring
+      - evaluation
+    restart: "no"
+    entrypoint: [ "sh", "-c", "sleep 2 && curl http://scoring:3000/seed && curl http://evaluation:3000/seed"]

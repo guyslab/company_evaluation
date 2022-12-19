@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const { seed } = require('./seed/app_seed');
+const {Connection} = require('./respositories/db/conn');
 
 // Get our API routes
 const api = require('./routes/api');
@@ -10,7 +11,8 @@ const defaults = require('./routes/default');
 
 const app = express();
 
-app.use(seed);
+Connection.getInstance().then(() => {});
+app.use('/seed', seed);
 
 // Parsers for POST data
 app.use(bodyParser.json());

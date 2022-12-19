@@ -1,20 +1,37 @@
-const companyEvaluations = require('../services/ealuation_service');
+const evaluationService = require('../services/evaluation_service');
 
-const evaluateCompany = async function (req, res) {
-  const companyId = req.params.company_id;
-  const userId = req.headers['x-user-id'];
-  let result;
+const evaluate = function (req, res, next) {
+  const desiredUserId = req.params.user_id;
+  const actualUserId = req.headers['x-user-id'];
+  if (actualUserId !== desiredUserId){
+    res.status(403).end(`Cannot evaluate for user: ${desiredUserId}`);
+    return;
+  }
+  res.status(202).json({status: "calculating", "location": `users/${actualUserId}/evaluations/latest`});
+  next();
+}
+
+const getLatestEvaluation = async function (req, res) {
+  const desiredUserId = req.params.user_id;
+  const actualUserId = req.headers['x-user-id'];
+  if (actualUserId !== desiredUserId){
+    res.status(403).end(`Cannot get evaluations for user: ${desiredUserId}`);
+    return;
+  }
+
+  let latest;
   try {
-    result = await companyEvaluations.evaluateCompany(userId, companyId);
+    latest = await evaluationService.getLatestEvaluation(actualUserId);
   } catch (error) {
     console.error(error);
-    res.status(400).send(`Error evaluating company with id ${companyId.id}!`);
+    res.status(400).end(`Error evaluating for user id ${actualUserId}!`);
   }  
   
-  res.send({result});
+  res.status(200).json(latest);
 }
 
 
 module.exports = {
-  evaluateCompany
+  evaluate,
+  getLatestEvaluation
 };

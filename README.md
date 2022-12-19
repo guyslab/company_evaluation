@@ -24,6 +24,8 @@ At configuation page modify weights for calculations
 * Scoring user *usr1* scores company A: `curl -X PUT http://localhost:3001/users/usr1/scores/A -H "Content-Type: application/json" -H "x-user-id: usr1" -d '{"score": 20000}'`
 * Scoring get scores for user *usr1*: `curl -X GET http://localhost:3001/users/usr1/scores -H "Content-Type: application/json" -H "x-user-id: usr1"`
 * Evaluate company A: `curl -X POST http://localhost:3001/companies/A/evaluations -H "Content-Type: application/json" -H "x-user-id: usr1"`
+* Evaluate all companies (using user *usr1*'s weights): `curl -X POST http://localhost:3002/users/usr1/evaluations -H "Content-Type: application/json" -H "x-user-id: usr1"`
+* Get latest evaluation for user *usr1*: `curl -X GET http://localhost:3002/users/usr1/evaluations/latest -H "Content-Type: application/json" -H "x-user-id: usr1"`
 
 
 ## Activities
@@ -72,13 +74,13 @@ sequenceDiagram
     end
     rect rgb(191, 223, 255)
         note right of UI: Calculation.
-        UI->>+Evaluation: GET /evaluations/latest/results   
+        UI->>+Evaluation: GET /evaluations/{evaluation_id}  
         Evaluation->>-UI: results     
         UI->>+Evaluation: POST /evaluation
         par each company ID in evaluation
             Evaluation->>+Scoring: POST /companies/{company_id}/evaluations
         end
-        UI->>+Evaluation: GET /evaluations/latest/results
+        UI->>+Evaluation: GET /evaluations/{evaluation_id}
         Evaluation->>-UI: results
     end
     rect rgb(210, 180, 255)
@@ -93,3 +95,4 @@ sequenceDiagram
 2. By the first required interface (implementation detail) - *API for calculating a company score by id*, the single-company scoring method should be invoked synchronously. If I were to design the solution I would suggest invoking asyncronously for greater scalability.
 3. Scoring service should persist company state. Such company state should be prefetched from a "Company service" (such as by events, ETLs, etc.) not implmented here.
 4. Evaluation service should persist all the company IDs in order to orchestrate the batch operation. As in 3 above, such list should be prefetched from a "Company service" not implemented here.
+5. Evaluation may be a time-consuming task, so the backend will perform it offline and asyncronously. In production, this should be implemented by publishing and consuming an event, probably with a message broker. For now, this is implemented by an Express.js middleware.
