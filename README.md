@@ -14,9 +14,13 @@ change API base URLs on `./spa/src/app/environments/environment.ts`
 docker-compose up
 ```
 navigate to http://localhost:8092
+
 At the top left switch between admin / user modes
+
 At the top left switch between home and configuration pages
+
 At home page - request and display company evaluations
+
 At configuation page modify weights for calculations
 
 #### API Examples
