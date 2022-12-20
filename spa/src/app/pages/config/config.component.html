@@ -1,0 +1,24 @@
+<h2>Configuration</h2>
+
+<p>Change your weights for evaluation, and when done click the "Submit" button below to apply.</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Score Type</td>
+            <td>Weight</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>company_age</td><td><input [(ngModel)]="userWeights.company_age" type="number" min="0" max="99"/></td></tr>
+        <tr><td>company_funding</td><td><input [(ngModel)]="userWeights.company_funding" type="number" min="0" max="99"/></td></tr>
+        <tr><td>company_size</td><td><input [(ngModel)]="userWeights.company_size" type="number" min="0" max="99"/></td></tr>
+        <tr><td>user_scoring</td><td><input [(ngModel)]="userWeights.user_scoring"  [disabled]="!isUserScoreWeightEditable" type="number" min="0" max="99"/></td></tr>
+    </tbody>
+</table>
+<p>
+    <button [disabled]="!isSubmitable" (click)="submit()">
+        <span *ngIf="!!isSubmitable">Submit</span>
+        <span *ngIf="!isSubmitable">Loading..</span>
+    </button>
+</p>

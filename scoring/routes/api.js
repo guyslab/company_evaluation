@@ -13,5 +13,6 @@ router.put('/users/:user_id/scores/:company_id', scoresController.scoreCompany);
 router.get('/users/:user_id/scores', scoresController.getScores)
 
 router.put('/users/:user_id/weights', weightsController.configureWeights);
+router.get('/users/:user_id/weights', weightsController.getWeights);
 
 module.exports = router;

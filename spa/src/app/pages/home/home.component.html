@@ -1,0 +1,29 @@
+<h2>Home</h2>
+
+<p>Possibly change your user scores, and when done click the "Recalculate" button below to evaluate according to the new scores.</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Company ID</td>
+            <td>Total Score</td>
+            <td>User Score</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let companyEval of evaluationInfo$ | async; let i = index">
+            <td>{{companyEval.company_id}}</td>
+            <td>{{companyEval.score.toFixed(2)}}</td>
+            <td (click)="setUserScoreEdit(i)">
+                <span *ngIf="editingIndex !== i">{{editedScores[i] || companyEval.user_score}}</span>
+                <input *ngIf="editingIndex === i" (change)="updateUserScore(i, companyEval, $event)" type="number" />
+            </td>
+        </tr>
+</tbody>
+</table>
+<p>
+    <button [disabled]="!isRecalculatable" (click)="recalculate()">
+        <span *ngIf="!!isRecalculatable">Recalculate</span>
+        <span *ngIf="!isRecalculatable">Loading..</span>
+    </button>
+</p>

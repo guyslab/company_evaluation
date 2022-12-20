@@ -4,12 +4,15 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const { seed } = require('./seed/app_seed');
 const {Connection} = require('./respositories/db/conn');
+const cors = require('cors');
 
 // Get our API routes
 const api = require('./routes/api');
 const defaults = require('./routes/default');
 
+
 const app = express();
+app.use(cors({origin: '*'}));
 
 Connection.getInstance().then(() => {});
 app.use('/seed', seed);

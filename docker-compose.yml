@@ -2,11 +2,11 @@ version: '2' # specify docker-compose version
 
 # Define the services/containers to be run
 services:
-  # spa:
-  #   hostname: localhost
-  #   build: spa
-  #   ports:
-  #     - "8092:80"
+  spa:
+    hostname: localhost
+    build: spa
+    ports:
+      - "8092:80"
   
   scoring:
     build: scoring
