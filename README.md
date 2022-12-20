@@ -8,7 +8,9 @@ The purpose of the code is to follow a requirement for calculating and presentin
 ```bash
 git clone https://github.com/guyslab/company_evaluation.git
 cd company_evaluation
+```
 change API base URLs on `./spa/src/app/environments/environment.ts`
+```bash
 docker-compose up
 ```
 navigate to http://localhost:8092
